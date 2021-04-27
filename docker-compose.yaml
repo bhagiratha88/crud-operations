@@ -1,5 +1,4 @@
-version: latest
-
+version: 12
 services:
 
     node:
