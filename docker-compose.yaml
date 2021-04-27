@@ -1,0 +1,37 @@
+version: '12.18.1'
+
+services:
+
+    node:
+        build:
+            context: ./node
+            args:
+                - NODE_VERSION=latest
+                - PROJECT_PATH=/opt/app/
+                - NODE_ENV=production
+                - YARN=false
+        volumes:
+            - ../:/opt/app
+        entrypoint: run-nodock "node index.js"
+        tty: true
+
+    mysql:
+        build:
+            context: ./mysql
+            args:
+                - MYSQL_DATABASE=default_database
+                - MYSQL_USER=default_user
+                - MYSQL_PASSWORD=secret
+                - MYSQL_ROOT_PASSWORD=root
+        volumes:
+            - ./data/mysql/:/var/lib/mysql
+        expose:
+            - "3306"
+    
+
+    mongo:
+        build: ./mongo
+        expose:
+            - "27017"
+        volumes:
+            - ./data/mongo/:/var/lib/mongodb
